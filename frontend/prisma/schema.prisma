@@ -9,7 +9,7 @@ model Project {
   id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name    String   @map("name")
   isTest  Boolean  @default(true) @map("is_test")
-  cid     String
+  cid     String?
   metrics Metric[]
 
   @@map("project")
