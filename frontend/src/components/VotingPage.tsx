@@ -90,7 +90,7 @@ function MetricCard({ type }: { type: MetricType }) {
   return (
     <div className="p-4">
       {type}
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <VoteButton
           disabled={decreaseDisabled}
           handleClick={handleDecreaseVotes}
@@ -122,10 +122,10 @@ function VoteButton({
   return (
     <button
       className={classNames(
-        "p-4 border-[1px] border-gray-400 font-bold",
+        "border-[1px] border-gray-400 p-4 font-bold",
         disabled
-          ? "bg-gray-600 cursor-not-allowed"
-          : "bg-blue-500 text-white cursor-pointer"
+          ? "cursor-not-allowed bg-gray-600"
+          : "cursor-pointer bg-blue-500 text-white"
       )}
       onClick={handleClick}
     >
