@@ -10,7 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "hardhat": "^2.16.0"
+    "hardhat": "^2.16.0",
+    "prisma": "^4.16.1"
   },
   "dependencies": {
     "@typechain/hardhat": "^8.0.0",
