@@ -87,7 +87,7 @@ async function getDependenciesRecursively(dependencies, level = 1) {
     //   { user: "davidedantonio", repo: "fastify-axios" },
     //   { user: "jkrems", repo: "babel-tap" },
     // ],
-    "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"
+    process.env.NEXT_PUBLIC_GITHUB_API_KEY
   );
 
   const allDependencies = await getDependenciesRecursively(
