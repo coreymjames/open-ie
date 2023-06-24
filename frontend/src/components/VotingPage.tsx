@@ -1,37 +1,27 @@
 import { useAppContext } from "@/context";
 import { classNames } from "@/lib/classNames";
+import { MetricType } from "@prisma/client";
 import { useEffect, useState } from "react";
-
-interface Metric {
-  name: string;
-  
-}
-
-const metrics:Metric[] = [
-  {
-    name: "Metric 1"
-  },
-  {
-    name: "Metric 2"
-  }
-]
 
 function VotingPage () {
  return (
   <>
     <RemainingCredits/>
     <div>
-      {metrics.map(metric => <MetricCard key={metric.name} name={metric.name}/>)}
+      <MetricCard type={MetricType.NUM_DEPENDANTS}/>    
+      <MetricCard type={MetricType.NUM_GITHUB_STARS}/>    
+      <MetricCard type={MetricType.NUM_NPM_DOWNLOADS}/>    
+      <MetricCard type={MetricType.NUM_GITHUB_CONTRIBUTORS}/>    
     </div>
   </>
  )
 }
 
 
-function MetricCard ({name}: {name: string}) {
+function MetricCard ({type}: {type: string}) {
   return (
   <div>
-    {name}
+    {type}
     <VoteInput />
   </div>
   )
