@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context";
-import { ProjectWithMetrics, Weight } from "@/types";
+import { MetricTypeDisplay, ProjectWithMetrics, Weight } from "@/types";
 import { Metric } from "@prisma/client";
 import { useState } from "react";
 
@@ -22,7 +22,9 @@ function ProjectList() {
   //
   return (
     <div className="m-4 divide-y divide-gray-300 border-x-[1px]  border-gray-300 first:rounded-t first:border-t-[1px] last:border-b-[1px]">
-      <div className="rounded-t bg-gray-100 p-4"></div>
+      <div className="rounded-t bg-gray-100 p-2 text-sm font-medium">
+        Projects
+      </div>
       {projects
         .sort((a, b) => rewardFunction(a, weights) - rewardFunction(b, weights))
         .map((project, index) => (
@@ -84,13 +86,6 @@ function ProjectCard({
     </div>
   );
 }
-
-const MetricTypeDisplay = {
-  NUM_DEPENDANTS: "Dependents",
-  NUM_GITHUB_CONTRIBUTORS: "Contributors",
-  NUM_GITHUB_STARS: "Stars",
-  NUM_NPM_DOWNLOADS: "Downloads",
-};
 
 function ProjectMetric({ metric }: { metric: Metric }) {
   return (
