@@ -12,6 +12,7 @@ import { trpc } from "../trpc";
 
 // import { createPublicClient, http } from 'viem'; 
 import { createPublicClient, http } from 'viem'
+import { AppContextProvider, useAppContext } from "@/context";
 
 // const publicClient = createPublicClient({
 //   chain: mainnet,
@@ -42,6 +43,7 @@ const wagmiConfig = createConfig({
 
 
 export default function App() {
+  const { setProjects } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState<any | null>(null);
 
@@ -50,32 +52,38 @@ export default function App() {
       .getData.query()
       .then((data) => {
         setState(data);
-				console.log(data);
+        console.log(data);
+        setProjects(data.projects)
         setIsLoading(false);
       });
-  }, []);
+  }, [setProjects]);
 
   if (isLoading) {
     return (
       <div id="app">
-				Loading
+        Loading
       </div>
     );
-	}
+  }
 
-	return <Main state={state} />
+  return <AppContextProvider><Main state={state} /></AppContextProvider>
 
 }
 
 function Main({ state }: { state: GlobalState }) {
+  const { setProjects } = useAppContext();
+  useEffect(() => {
+    setProjects(state.projects);
+  }, [state.projects, setProjects]);
+
   return <div>
     <QueryClientProvider client={queryClient}>
-    <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
-    <ConnectWallet />
-    <VotingPage />
-    </RainbowKitProvider>
-    </WagmiConfig>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <ConnectWallet />
+          <VotingPage />
+        </RainbowKitProvider>
+      </WagmiConfig>
     </QueryClientProvider>
   </div>
 }
