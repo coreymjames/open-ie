@@ -10,7 +10,10 @@ import {
 
 type AppProviderProps = { children: React.ReactNode };
 
+const TOTAL_CREDITS = 50;
+
 export type AppState = {
+  totalCredits: number;
   remainingCredits: number;
   setRemainingCredits: Dispatch<SetStateAction<number>>;
   projects: ProjectWithMetrics[];
@@ -20,6 +23,7 @@ export type AppState = {
 };
 
 export const AppContext = createContext<AppState>({
+  totalCredits: TOTAL_CREDITS,
   remainingCredits: 50,
   setRemainingCredits: () => {},
   projects: [],
@@ -29,7 +33,8 @@ export const AppContext = createContext<AppState>({
 });
 
 export const AppContextProvider = ({ children }: AppProviderProps) => {
-  const [remainingCredits, setRemainingCredits] = useState<number>(50);
+  const [remainingCredits, setRemainingCredits] =
+    useState<number>(TOTAL_CREDITS);
   const [projects, setProjects] = useState<ProjectWithMetrics[]>([]);
   const [weights, setWeights] = useState<Weight[]>([
     { metricType: "NUM_DEPENDANTS", value: 1 },
@@ -50,6 +55,7 @@ export const AppContextProvider = ({ children }: AppProviderProps) => {
   }
 
   const value = {
+    totalCredits: TOTAL_CREDITS,
     remainingCredits,
     setRemainingCredits,
     projects,
