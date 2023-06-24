@@ -10,9 +10,11 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "hardhat": "^2.16.0"
+    "hardhat": "^2.16.0",
+    "prisma": "^4.16.1"
   },
   "dependencies": {
+    "@prisma/client": "^4.16.1",
     "@typechain/hardhat": "^8.0.0",
     "hardhat-deploy": "^0.11.31"
   }

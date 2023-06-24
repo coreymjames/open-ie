@@ -1,11 +1,13 @@
+// Don't let app render on server
+// https://colinhacks.com/essays/building-a-spa-with-nextjs
+import { useEffect, useState } from "react";
+import App from "../components/App";
 import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
-import { AppContextProvider } from '../context';
+import { AppContextProvider } from "@/context";
 
-export default function App({ Component, pageProps }: AppProps) {
-  return (
-  <AppContextProvider>
-    <Component {...pageProps} />
-  </AppContextProvider>
-  );
+function Root() {
+  const [render, setRender] = useState(false);
+  useEffect(() => setRender(true), []);
+  return render ? <AppContextProvider><App /></AppContextProvider> : null;
 }
+export default Root;
