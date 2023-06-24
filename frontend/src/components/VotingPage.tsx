@@ -1,22 +1,28 @@
 import { useAppContext } from "@/context";
 import { classNames } from "@/lib/classNames";
 import { MetricType } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import ProjectList from "./ProjectList";
 
 function VotingPage() {
   return (
-    <>
-      <RemainingCredits />
-      <Weights />
-      <div>
+    <div className="grid grid-cols-3 p-4">
+      <div className="col-span-3">
+        <RemainingCredits />
+      </div>
+      <div className="col-span-3">
+        <Weights />
+      </div>
+      <div className="col-span-1">
         <MetricCard type={MetricType.NUM_DEPENDANTS} />
         <MetricCard type={MetricType.NUM_GITHUB_STARS} />
         <MetricCard type={MetricType.NUM_NPM_DOWNLOADS} />
         <MetricCard type={MetricType.NUM_GITHUB_CONTRIBUTORS} />
       </div>
-      <ProjectList />
-    </>
+      <div className="col-span-2">
+        <ProjectList />
+      </div>
+    </div>
   );
 }
 
@@ -38,7 +44,7 @@ function Weights() {
 
 function MetricCard({ type }: { type: MetricType }) {
   return (
-    <div>
+    <div className="p-4">
       {type}
       <VoteInput metricType={type} />
     </div>
@@ -92,27 +98,39 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
 
   return (
     <div className="flex gap-2 items-center">
-      <button
-        className={classNames(
-          "p-4 border-[1px] border-gray-400 cursor-pointer",
-          decreaseDisabled ? "bg-gray-600 cursor-not-allowed" : ""
-        )}
-        onClick={handleDecreaseVotes}
-      >
+      <VoteButton disabled={decreaseDisabled} handleClick={handleDecreaseVotes}>
         -
-      </button>
+      </VoteButton>
       <div>Votes: {votes}</div>
-      <button
-        className={classNames(
-          "p-4 border-[1px] border-gray-400 cursor-pointer",
-          increaseDisabled ? "bg-gray-600 cursor-not-allowed" : ""
-        )}
-        onClick={handleIncreaseVotes}
-      >
+      <VoteButton disabled={increaseDisabled} handleClick={handleIncreaseVotes}>
         +
-      </button>
+      </VoteButton>
       <div>Credits Used: {creditsUsed}</div>
     </div>
+  );
+}
+
+interface VoteButtonProps {
+  disabled: boolean;
+  handleClick: () => void;
+}
+function VoteButton({
+  children,
+  disabled,
+  handleClick,
+}: PropsWithChildren<VoteButtonProps>) {
+  return (
+    <button
+      className={classNames(
+        "p-4 border-[1px] border-gray-400 font-bold",
+        disabled
+          ? "bg-gray-600 cursor-not-allowed"
+          : "bg-blue-500 text-white cursor-pointer"
+      )}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
   );
 }
 

@@ -20,7 +20,7 @@ function ProjectList() {
   }
 
   return (
-    <div>
+    <div className="p-4">
       {projects
         .sort((a, b) => rewardFunction(a, weights) - rewardFunction(b, weights))
         .map((project, index) => (
