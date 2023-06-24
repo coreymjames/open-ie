@@ -2,6 +2,7 @@
 // https://colinhacks.com/essays/building-a-spa-with-nextjs
 import { useEffect, useState } from "react";
 import App from "../components/App";
+import "@/styles/globals.css";
 
 function Root() {
   const [render, setRender] = useState(false);

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { trpc } from "../trpc";
 import { GlobalState } from "@/types";
 import ConnectWallet from "./connect-wallet";
 
@@ -21,6 +20,9 @@ import TokenArtifact from "../contracts/Token.json";
 import contractAddress from "../contracts/contract-address.json";
 
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { AppContextProvider, useAppContext } from "@/context";
+import { trpc } from "@/trpc";
+import VotingPage from "./VotingPage";
 
 // const publicClient = createPublicClient({
 //   chain: mainnet,
@@ -76,31 +78,33 @@ const wagmiConfig = createConfig({
   webSocketPublicClient,
 });
 
-
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [state, setState] = useState<any | null>(null);
+  const [state, setState] = useState<GlobalState | null>(null);
 
   useEffect(() => {
     trpc()
       .getData.query()
       .then((data) => {
         setState(data);
-				console.log(data);
+        console.log(data);
+
         setIsLoading(false);
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <div id="app">
-				Loading
-      </div>
-    );
-	}
+  if (isLoading && !state) {
+    return <div id="app">Loading</div>;
+  }
+  if (!state) {
+    return <div id="app">Error</div>;
+  }
 
-	return <Main state={state} />
-
+  return (
+    <AppContextProvider>
+      <Main state={state} />
+    </AppContextProvider>
+  );
 }
 
 function Main({ state }: { state: GlobalState }) {
@@ -110,16 +114,82 @@ function Main({ state }: { state: GlobalState }) {
   //   abi: TokenArtifact.abi,
   //   signerOrProvider: provider,
   // });
-  return <div>
-    <QueryClientProvider client={queryClient}>
-    <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
-    <ConnectWallet />
 
-  
-    </RainbowKitProvider>
-    </WagmiConfig>
-    </QueryClientProvider>
-  </div>
+  const { setProjects } = useAppContext();
+  useEffect(() => {
+    setProjects(state.projects);
+    // @TODO - remove hardcoded projects
+    //   setProjects([
+    //     {
+    //         "id": "f4f67524-1728-4aed-94a1-85590d003464",
+    //         "githubLink": "https://github.com/wagmi-dev/wagmi",
+    //         "npmLink": "https://www.npmjs.com/package/wagmi",
+    //         "isTest": true,
+    //         "metrics": [
+    //           { id: 1,
+    //             metricType: MetricType.NUM_DEPENDANTS,
+    //             value: 2,
+    //             projectId: "f4f67524-1728-4aed-94a1-85590d003464"
+    //           },
+    //           { id: 2,
+    //             metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
+    //             value: 4,
+    //             projectId: "f4f67524-1728-4aed-94a1-85590d003464"
+    //           },
+    //           { id: 3,
+    //             metricType: MetricType.NUM_GITHUB_STARS,
+    //             value: 6,
+    //             projectId: "f4f67524-1728-4aed-94a1-85590d003464"
+    //           },
+    //           { id: 4,
+    //             metricType: MetricType.NUM_NPM_DOWNLOADS,
+    //             value: 8,
+    //             projectId: "f4f67524-1728-4aed-94a1-85590d003464"
+    //           },
+    //         ]
+    //     },
+    //     {
+    //       "id": "f4f67524-1728-4aed-94a1-85590d003463",
+    //       "githubLink": "https://github.com/wagmi-dev/nope",
+    //       "npmLink": "https://www.npmjs.com/package/123",
+    //       "isTest": true,
+    //       "metrics": [
+    //         { id: 1,
+    //           metricType: MetricType.NUM_DEPENDANTS,
+    //           value: 8,
+    //           projectId: "f4f67524-1728-4aed-94a1-85590d003463"
+    //         },
+    //         { id: 2,
+    //           metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
+    //           value: 6,
+    //           projectId: "f4f67524-1728-4aed-94a1-85590d003463"
+    //         },
+    //         { id: 3,
+    //           metricType: MetricType.NUM_GITHUB_STARS,
+    //           value: 4,
+    //           projectId: "f4f67524-1728-4aed-94a1-85590d003463"
+    //         },
+    //         { id: 4,
+    //           metricType: MetricType.NUM_NPM_DOWNLOADS,
+    //           value: 2,
+    //           projectId: "f4f67524-1728-4aed-94a1-85590d003463"
+    //         },
+    //       ]
+    //   }
+    // ]
+    // )
+  }, [state.projects, setProjects]);
+
+  return (
+    <div>
+      <QueryClientProvider client={queryClient}>
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitProvider chains={chains}>
+            <ConnectWallet />
+            <VotingPage />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </QueryClientProvider>
+    </div>
+  );
 }
-import '@rainbow-me/rainbowkit/styles.css';
