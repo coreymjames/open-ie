@@ -81,10 +81,10 @@ function VoteInput () {
   }, [votes, remainingCredits])
 
   return (
-  <div className="flex gap-2">
-    <button className={classNames('p-4 border-[1px] border-gray-400', decreaseDisabled ? 'bg-gray-600 cursor-not-allowed' : '')} onClick={handleDecreaseVotes}>-</button>
+  <div className="flex gap-2 items-center">
+    <button className={classNames('p-4 border-[1px] border-gray-400 cursor-pointer', decreaseDisabled ? 'bg-gray-600 cursor-not-allowed' : '')} onClick={handleDecreaseVotes}>-</button>
     <div>Votes: {votes}</div>
-    <button className={classNames('p-4 border-[1px] border-gray-400', increaseDisabled ? 'bg-gray-600 cursor-not-allowed' : '')} onClick={handleIncreaseVotes}>+</button>
+    <button className={classNames('p-4 border-[1px] border-gray-400 cursor-pointer', increaseDisabled ? 'bg-gray-600 cursor-not-allowed' : '')} onClick={handleIncreaseVotes}>+</button>
     <div>
       Credits Used: {creditsUsed}
     </div>
