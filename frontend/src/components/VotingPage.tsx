@@ -1,7 +1,8 @@
 import { useAppContext } from "@/context";
 import { classNames } from "@/lib/classNames";
-import { MetricType, Project } from "@prisma/client";
+import { MetricType } from "@prisma/client";
 import { useEffect, useState } from "react";
+import ProjectList from "./ProjectList";
 
 function VotingPage () {
  return (
@@ -31,31 +32,6 @@ function Weights () {
   )
 }
 
-function ProjectList () {
-  const {projects} = useAppContext();
-  return (
-  <div>
-    {projects.map(project => <ProjectCard key={project.id} project={project} />)}
-  </div>
-  )
-}
-
-function ProjectCard ({project}: {project: Project}) {
-  return (
-  <div className="p-2 bg-slate-100 border-2 border-slate-300 flex gap-2 flex-wrap">
-    <div>
-      Rank 1
-    </div>
-    <div>
-      <div className="w-full">{project.id}</div>
-      <div>{project.githubLink}</div>
-      <div>{project.npmLink}</div>
-    </div>
-  </div>
-  )
-}
-
-
 function MetricCard ({type}: {type: MetricType}) {
   return (
   <div>
@@ -71,15 +47,7 @@ function VoteInput ({metricType}: {metricType: MetricType}) {
   const [votes, setVotes] = useState<number>(0);
   const [increaseDisabled, setIncreaseDisabled] = useState<boolean>(false);
   const [decreaseDisabled, setDecreaseDisabled] = useState<boolean>(false);
-  
-  function rewardFunction () {
-    // setProjects(projects => projects.map(project => {
-    //   project.metrics.map(metric => {
-    //     ;
-    //     return metric;
-    //   }
-    // })
-  }
+
   function handleIncreaseVotes () {
     if (increaseDisabled) return;
     const tempVotes = votes + 1;
