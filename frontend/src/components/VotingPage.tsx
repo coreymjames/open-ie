@@ -1,22 +1,28 @@
 import { useAppContext } from "@/context";
 import { classNames } from "@/lib/classNames";
 import { MetricType } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import ProjectList from "./ProjectList";
 
 function VotingPage() {
   return (
-    <>
-      <RemainingCredits />
-      <Weights />
-      <div>
+    <div className="grid grid-cols-3 p-4">
+      <div className="col-span-3">
+        <RemainingCredits />
+      </div>
+      <div className="col-span-3">
+        <Weights />
+      </div>
+      <div className="col-span-1">
         <MetricCard type={MetricType.NUM_DEPENDANTS} />
         <MetricCard type={MetricType.NUM_GITHUB_STARS} />
         <MetricCard type={MetricType.NUM_NPM_DOWNLOADS} />
         <MetricCard type={MetricType.NUM_GITHUB_CONTRIBUTORS} />
       </div>
-      <ProjectList />
-    </>
+      <div className="col-span-2">
+        <ProjectList />
+      </div>
+    </div>
   );
 }
 
@@ -37,15 +43,6 @@ function Weights() {
 }
 
 function MetricCard({ type }: { type: MetricType }) {
-  return (
-    <div>
-      {type}
-      <VoteInput metricType={type} />
-    </div>
-  );
-}
-
-function VoteInput({ metricType }: { metricType: MetricType }) {
   const { setRemainingCredits, remainingCredits, setProjects, setWeight } =
     useAppContext();
   const [creditsUsed, setCreditsUsed] = useState<number>(0);
@@ -58,7 +55,7 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
     const tempVotes = votes + 1;
     const cost = tempVotes * tempVotes;
     setVotes(tempVotes);
-    setWeight(metricType, 1);
+    setWeight(type, 1);
     setCreditsUsed(cost);
     setRemainingCredits((remaining) => remaining - (cost - votes * votes));
   }
@@ -67,7 +64,7 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
     if (decreaseDisabled) return;
     const tempVotes = votes - 1;
     const cost = tempVotes * tempVotes;
-    setWeight(metricType, -1);
+    setWeight(type, -1);
     setVotes(tempVotes);
     setCreditsUsed(cost);
     setRemainingCredits((remaining) => remaining + (votes * votes - cost));
@@ -91,28 +88,49 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
   }, [votes, remainingCredits]);
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        className={classNames(
-          "cursor-pointer border-[1px] border-gray-400 p-4",
-          decreaseDisabled ? "cursor-not-allowed bg-gray-600" : ""
-        )}
-        onClick={handleDecreaseVotes}
-      >
-        -
-      </button>
-      <div>Votes: {votes}</div>
-      <button
-        className={classNames(
-          "cursor-pointer border-[1px] border-gray-400 p-4 ",
-          increaseDisabled ? "cursor-not-allowed bg-gray-600" : ""
-        )}
-        onClick={handleIncreaseVotes}
-      >
-        +
-      </button>
-      <div>Credits Used: {creditsUsed}</div>
+    <div className="p-4">
+      {type}
+      <div className="flex items-center gap-2">
+        <VoteButton
+          disabled={decreaseDisabled}
+          handleClick={handleDecreaseVotes}
+        >
+          -
+        </VoteButton>
+        <div>Votes: {votes}</div>
+        <VoteButton
+          disabled={increaseDisabled}
+          handleClick={handleIncreaseVotes}
+        >
+          +
+        </VoteButton>
+        <div>Credits Used: {creditsUsed}</div>
+      </div>
     </div>
+  );
+}
+
+interface VoteButtonProps {
+  disabled: boolean;
+  handleClick: () => void;
+}
+function VoteButton({
+  children,
+  disabled,
+  handleClick,
+}: PropsWithChildren<VoteButtonProps>) {
+  return (
+    <button
+      className={classNames(
+        "border-[1px] border-gray-400 p-4 font-bold",
+        disabled
+          ? "cursor-not-allowed bg-gray-600"
+          : "cursor-pointer bg-blue-500 text-white"
+      )}
+      onClick={handleClick}
+    >
+      {children}
+    </button>
   );
 }
 
