@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { trpc } from "../trpc";
 import { GlobalState } from "@/types";
-import ConnectWallet from "./connect-wallet";
-
 import '@rainbow-me/rainbowkit/styles.css';
+import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { createConfig, configureChains, mainnet, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+
+import ConnectWallet from "./connect-wallet";
+import VotingPage from "./VotingPage";
+import { trpc } from "../trpc";
+
 // import { createPublicClient, http } from 'viem'; 
 import { createPublicClient, http } from 'viem'
 
@@ -71,9 +73,9 @@ function Main({ state }: { state: GlobalState }) {
     <WagmiConfig config={wagmiConfig}>
     <RainbowKitProvider chains={chains}>
     <ConnectWallet />
+    <VotingPage />
     </RainbowKitProvider>
     </WagmiConfig>
     </QueryClientProvider>
   </div>
 }
-import '@rainbow-me/rainbowkit/styles.css';
