@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@types/node-fetch": "^2.6.4",
     "hardhat": "^2.16.0",
     "prettier": "2.8.8",
     "prisma": "^4.16.1"
@@ -17,6 +18,8 @@
   "dependencies": {
     "@prisma/client": "^4.16.1",
     "@typechain/hardhat": "^8.0.0",
-    "hardhat-deploy": "^0.11.31"
+    "hardhat-deploy": "^0.11.31",
+    "node-fetch": "^3.3.1",
+    "npm-api": "^1.0.1"
   }
 }

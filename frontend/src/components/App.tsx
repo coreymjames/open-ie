@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import { GlobalState } from "@/types";
-import "@rainbow-me/rainbowkit/styles.css";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { createConfig, configureChains, mainnet, WagmiConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import ConnectWallet from "./connect-wallet";
-import VotingPage from "./VotingPage";
-import { trpc } from "../trpc";
 
-// import { createPublicClient, http } from 'viem';
-import { createPublicClient, http } from "viem";
+import '@rainbow-me/rainbowkit/styles.css';
+import { createConfig, configureChains, WagmiConfig, useContractInfiniteReads } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RainbowKitProvider, connectorsForWallets, getDefaultWallets } from "@rainbow-me/rainbowkit";
+// import { createPublicClient, http } from 'viem'; 
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  zora,
+  goerli,
+} from 'wagmi/chains';
+import TokenArtifact from "../contracts/Token.json";
+import contractAddress from "../contracts/contract-address.json";
+
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { AppContextProvider, useAppContext } from "@/context";
-import { MetricType } from "@prisma/client";
+import { trpc } from "@/trpc";
+import VotingPage from "./VotingPage";
 
 // const publicClient = createPublicClient({
 //   chain: mainnet,
@@ -22,24 +31,51 @@ import { MetricType } from "@prisma/client";
 
 const queryClient = new QueryClient();
 
+const projectId = 'YOUR_PROJECT_ID';
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [publicProvider()]
+  [
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    zora,
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
+  ],
+  // [publicProvider()]
+  [    jsonRpcProvider({
+    rpc: (chain) => ({
+      http: `http://127.0.0.1:8545`,
+    }),
+  }),]
 );
 
-const projectId = "YOUR_PROJECT_ID";
-
-const { connectors, wallets } = getDefaultWallets({
-  appName: "Hypercerts",
+const { wallets } = getDefaultWallets({
+  appName: 'RainbowKit demo',
   projectId,
   chains,
 });
 
+const demoAppInfo = {
+  appName: 'Rainbowkit Demo',
+};
+
+const connectors = connectorsForWallets([
+  ...wallets,
+  // {
+  //   groupName: 'Other',
+  //   // wallets: [
+  //   //   argentWallet({ projectId, chains }),
+  //   //   trustWallet({ projectId, chains }),
+  //   //   ledgerWallet({ projectId, chains }),
+  //   // ],
+  // },
+]);
+
 const wagmiConfig = createConfig({
   autoConnect: true,
+  connectors,
   publicClient,
   webSocketPublicClient,
-  connectors,
 });
 
 export default function App() {
@@ -72,6 +108,13 @@ export default function App() {
 }
 
 function Main({ state }: { state: GlobalState }) {
+  // const provider = useProvider();
+  // const contract = useContractInfiniteReads({
+  //   address: CONTRACT_ADDRESS,
+  //   abi: TokenArtifact.abi,
+  //   signerOrProvider: provider,
+  // });
+
   const { setProjects } = useAppContext();
   useEffect(() => {
     // setProjects(state.projects);
