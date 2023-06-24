@@ -1,6 +1,9 @@
 const fetch = require("node-fetch");
 const NpmApi = require("npm-api");
 const fs = require("fs");
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
 
 async function fetchPackageJson(repos, token) {
   const headers = {
@@ -65,28 +68,28 @@ async function getDependenciesRecursively(dependencies, level = 1) {
   for (const dep in dependencies) {
     await processDependency(dep, level);
   }
-  fs.writeFile(
-    "dependencyList.json",
-    JSON.stringify(dependencyList, null, 2),
-    (err) => {
-      if (err) {
-        console.error("Error saving dependencyList to file:", err);
-      } else {
-        console.log("Saved dependencyList to dependencyList.json");
-      }
-    }
-  );
   return dependencyList;
+}
+
+async function saveDependenciesToDatabase(dependencies) {
+  for (const dep of dependencies) {
+    try {
+      await prisma.project.create({
+        data: {
+          name: dep.dependency,
+          isTest: true,
+        },
+      });
+      console.log(`Saved dependency ${dep.dependency} to the database.`);
+    } catch (err) {
+      console.error(`Failed to save dependency ${dep.dependency}: ${err}`);
+    }
+  }
 }
 
 (async () => {
   const initialDependencies = await fetchPackageJson(
-    [{ user: "node-fetch", repo: "node-fetch" }],
-    // [{ user: "node-fetch", repo: "fetch-blob" }],
-    // [
-    //   { user: "davidedantonio", repo: "fastify-axios" },
-    //   { user: "jkrems", repo: "babel-tap" },
-    // ],
+    [{ user: "node-fetch", repo: "fetch-blob" }],
     process.env.NEXT_PUBLIC_GITHUB_API_KEY
   );
 
@@ -95,4 +98,8 @@ async function getDependenciesRecursively(dependencies, level = 1) {
     1
   );
   console.log(allDependencies);
+
+  await saveDependenciesToDatabase(allDependencies);
+
+  await prisma.$disconnect();
 })();
