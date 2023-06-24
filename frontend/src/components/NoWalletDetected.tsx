@@ -14,7 +14,11 @@ export function NoWalletDetected() {
               Coinbase Wallet
             </a>
             or{" "}
-            <a href="http://metamask.io" target="_blank" rel="noopener noreferrer">
+            <a
+              href="http://metamask.io"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               MetaMask
             </a>
             .
