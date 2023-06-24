@@ -25,7 +25,11 @@ async function fetchPackageJson(repos, token) {
       const packageJson = JSON.parse(
         Buffer.from(fileData.content, "base64").toString()
       );
-      Object.assign(allDependencies, packageJson.dependencies);
+      Object.assign(
+        allDependencies,
+        packageJson.dependencies,
+        packageJson.devDependencies
+      );
     } catch (error) {
       console.error(
         `Error fetching package.json for repo "${repo}" of user "${user}": ${error.message}`
@@ -77,7 +81,13 @@ async function saveDependenciesToDatabase(dependencies) {
       await prisma.project.create({
         data: {
           name: dep.dependency,
-          isTest: true,
+          isTest: false,
+          metrics: {
+            create: {
+              metricType: "NUM_DEPENDANTS",
+              value: dep.count,
+            },
+          },
         },
       });
       console.log(`Saved dependency ${dep.dependency} to the database.`);
@@ -89,7 +99,43 @@ async function saveDependenciesToDatabase(dependencies) {
 
 (async () => {
   const initialDependencies = await fetchPackageJson(
-    [{ user: "node-fetch", repo: "fetch-blob" }],
+    [
+      { user: "AvinashNayak27", repo: "hackfs23" },
+      { user: "mbcse", repo: "web3stash" },
+      { user: "hfccr", repo: "hfs23" },
+      { user: "george-hub331", repo: "clover-hackfs2023" },
+      { user: "ozeliger", repo: "delta" },
+      { user: "aaytuncc", repo: "HackFS-2023" },
+      { user: "Akshit1311", repo: "hackfs-2023" },
+      { user: "Manidills", repo: "E2A" },
+      { user: "Ayushjain2205", repo: "hack-fs" },
+      { user: "Dhruv-2003", repo: "hackfs-2023" },
+      { user: "hrsh22", repo: "mintlock" },
+      { user: "RaviMauryaHootowl", repo: "Tribe-HackFS" },
+      { user: "aarav1656", repo: "ethglobal" },
+      { user: "TeodorescuCostin", repo: "hackFS-2023" },
+      { user: "Shiyasmohd", repo: "web3-email" },
+      { user: "aeither", repo: "fil-frens" },
+      { user: "Harsh2220", repo: "DeBlog" },
+      { user: "Ahmed-Aghadi", repo: "The-Dao" },
+      { user: "MarbleLeaf", repo: "LoadRunner" },
+      { user: "zkNetcast", repo: "netcast" },
+    ],
+    // [
+    //   { user: "coreymjames", repo: "open-ie" },
+    //   { user: "Kiernan-G", repo: "eth-waterloo" },
+    //   { user: "trillaboi", repo: "starlight" },
+    //   { user: "pratikdahal105", repo: "everest_hackathon" },
+    //   { user: "gedithejedi", repo: "anonicard" },
+    //   { user: "tbdeath", repo: "frontend" },
+    //   { user: "tbdeath", repo: "backend" },
+    //   { user: "slashweb", repo: "me-emergency-scan" },
+    // ],
+    // [{ user: "node-fetch", repo: "fetch-blob" }],
+    // [
+    //   { user: "davidedantonio", repo: "fastify-axios" },
+    //   { user: "jkrems", repo: "babel-tap" },
+    // ],
     process.env.NEXT_PUBLIC_GITHUB_API_KEY
   );
 
