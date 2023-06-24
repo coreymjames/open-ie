@@ -43,15 +43,6 @@ function Weights() {
 }
 
 function MetricCard({ type }: { type: MetricType }) {
-  return (
-    <div className="p-4">
-      {type}
-      <VoteInput metricType={type} />
-    </div>
-  );
-}
-
-function VoteInput({ metricType }: { metricType: MetricType }) {
   const { setRemainingCredits, remainingCredits, setProjects, setWeight } =
     useAppContext();
   const [creditsUsed, setCreditsUsed] = useState<number>(0);
@@ -64,7 +55,7 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
     const tempVotes = votes + 1;
     const cost = tempVotes * tempVotes;
     setVotes(tempVotes);
-    setWeight(metricType, 1);
+    setWeight(type, 1);
     setCreditsUsed(cost);
     setRemainingCredits((remaining) => remaining - (cost - votes * votes));
   }
@@ -73,7 +64,7 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
     if (decreaseDisabled) return;
     const tempVotes = votes - 1;
     const cost = tempVotes * tempVotes;
-    setWeight(metricType, -1);
+    setWeight(type, -1);
     setVotes(tempVotes);
     setCreditsUsed(cost);
     setRemainingCredits((remaining) => remaining + (votes * votes - cost));
@@ -97,15 +88,24 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
   }, [votes, remainingCredits]);
 
   return (
-    <div className="flex gap-2 items-center">
-      <VoteButton disabled={decreaseDisabled} handleClick={handleDecreaseVotes}>
-        -
-      </VoteButton>
-      <div>Votes: {votes}</div>
-      <VoteButton disabled={increaseDisabled} handleClick={handleIncreaseVotes}>
-        +
-      </VoteButton>
-      <div>Credits Used: {creditsUsed}</div>
+    <div className="p-4">
+      {type}
+      <div className="flex gap-2 items-center">
+        <VoteButton
+          disabled={decreaseDisabled}
+          handleClick={handleDecreaseVotes}
+        >
+          -
+        </VoteButton>
+        <div>Votes: {votes}</div>
+        <VoteButton
+          disabled={increaseDisabled}
+          handleClick={handleIncreaseVotes}
+        >
+          +
+        </VoteButton>
+        <div>Credits Used: {creditsUsed}</div>
+      </div>
     </div>
   );
 }
