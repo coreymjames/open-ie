@@ -22,7 +22,9 @@ function ProjectList() {
   //
   return (
     <div className="m-4 divide-y divide-gray-300 border-x-[1px]  border-gray-300 first:rounded-t first:border-t-[1px] last:border-b-[1px]">
-      <div className="rounded-t bg-gray-100 p-4">Projects</div>
+      <div className="rounded-t bg-gray-100 p-2 text-sm font-medium">
+        Projects
+      </div>
       {projects
         .sort((a, b) => rewardFunction(a, weights) - rewardFunction(b, weights))
         .map((project, index) => (
