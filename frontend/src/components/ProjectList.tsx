@@ -18,9 +18,10 @@ function ProjectList() {
     }, 0);
     return result;
   }
-
+  //
   return (
-    <div className="p-4">
+    <div className="m-4 divide-y border-gray-300 divide-gray-300  border-x-[1px] last:border-b-[1px] first:border-t-[1px] first:rounded-t">
+      <div className="rounded-t p-4 bg-gray-100"></div>
       {projects
         .sort((a, b) => rewardFunction(a, weights) - rewardFunction(b, weights))
         .map((project, index) => (
@@ -38,10 +39,15 @@ function ProjectCard({
   index: number;
 }) {
   return (
-    <div className="p-2 bg-slate-100 border-2 border-slate-300 flex gap-2 flex-wrap">
+    <div className="w-full p-2 odd:bg-gray-50 even:bg-white flex gap-2 flex-wrap">
       <div>{index}</div>
-      <div>
-        <div className="w-full">{project.id}</div>
+      <div className="w-full">
+        <div className="w-full">Project Name</div>
+        <div className="flex justify-evenly w-full">
+          {project.metrics.map((metric) => (
+            <ProjectMetric key={metric.id} metric={metric} />
+          ))}
+        </div>
         <div>{project.githubLink}</div>
         <div>{project.npmLink}</div>
       </div>
@@ -49,4 +55,19 @@ function ProjectCard({
   );
 }
 
+const MetricTypeDisplay = {
+  NUM_DEPENDANTS: "Dependents",
+  NUM_GITHUB_CONTRIBUTORS: "Github Contributors",
+  NUM_GITHUB_STARS: "Github Stars",
+  NUM_NPM_DOWNLOADS: "NPM Downloads",
+};
+
+function ProjectMetric({ metric }: { metric: Metric }) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="text-xl">{metric.value}</div>
+      <div className="text-xs">{MetricTypeDisplay[metric.metricType]}</div>
+    </div>
+  );
+}
 export default ProjectList;
