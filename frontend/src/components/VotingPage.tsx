@@ -91,11 +91,11 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
   }, [votes, remainingCredits]);
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <button
         className={classNames(
-          "p-4 border-[1px] border-gray-400 cursor-pointer",
-          decreaseDisabled ? "bg-gray-600 cursor-not-allowed" : ""
+          "cursor-pointer border-[1px] border-gray-400 p-4",
+          decreaseDisabled ? "cursor-not-allowed bg-gray-600" : ""
         )}
         onClick={handleDecreaseVotes}
       >
@@ -104,8 +104,8 @@ function VoteInput({ metricType }: { metricType: MetricType }) {
       <div>Votes: {votes}</div>
       <button
         className={classNames(
-          "p-4 border-[1px] border-gray-400 cursor-pointer",
-          increaseDisabled ? "bg-gray-600 cursor-not-allowed" : ""
+          "cursor-pointer border-[1px] border-gray-400 p-4 ",
+          increaseDisabled ? "cursor-not-allowed bg-gray-600" : ""
         )}
         onClick={handleIncreaseVotes}
       >
