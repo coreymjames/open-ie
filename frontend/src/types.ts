@@ -1,7 +1,8 @@
-import { Prisma } from "@prisma/client";
+import { MetricType, Prisma } from "@prisma/client";
 
 export interface GlobalState {
-  projects: ProjectWithMetrics;
+  projects: ProjectWithMetrics[];
+  weights: Weight[];
 }
 
 export type ProjectWithMetrics = Prisma.ProjectGetPayload<{
@@ -9,3 +10,8 @@ export type ProjectWithMetrics = Prisma.ProjectGetPayload<{
     metrics: true;
   }
 }>;
+
+export type Weight = {
+  metricType: MetricType;
+  value: number;
+}

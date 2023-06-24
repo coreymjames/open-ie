@@ -8,6 +8,6 @@ import { AppContextProvider } from "@/context";
 function Root() {
   const [render, setRender] = useState(false);
   useEffect(() => setRender(true), []);
-  return render ? <AppContextProvider><App /></AppContextProvider> : null;
+  return render ? <App /> : null;
 }
 export default Root;

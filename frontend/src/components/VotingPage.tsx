@@ -1,44 +1,91 @@
 import { useAppContext } from "@/context";
 import { classNames } from "@/lib/classNames";
-import { MetricType } from "@prisma/client";
+import { MetricType, Project } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 function VotingPage () {
  return (
   <>
     <RemainingCredits/>
+    <Weights />
     <div>
       <MetricCard type={MetricType.NUM_DEPENDANTS}/>    
       <MetricCard type={MetricType.NUM_GITHUB_STARS}/>    
       <MetricCard type={MetricType.NUM_NPM_DOWNLOADS}/>    
       <MetricCard type={MetricType.NUM_GITHUB_CONTRIBUTORS}/>    
     </div>
+    <ProjectList />
   </>
  )
 }
 
+function Weights () {
+  const {weights} = useAppContext();
+  return (
+    <div>
+      <h3>Weights</h3>
+      <div className="flex gap-2">
+      {weights.map(weight => <div key={weight.metricType}>{weight.metricType}: {weight.value}</div>)}
+      </div>
+    </div>
+  )
+}
 
-function MetricCard ({type}: {type: string}) {
+function ProjectList () {
+  const {projects} = useAppContext();
   return (
   <div>
-    {type}
-    <VoteInput />
+    {projects.map(project => <ProjectCard key={project.id} project={project} />)}
   </div>
   )
 }
 
-function VoteInput () {
-  const {setRemainingCredits, remainingCredits} = useAppContext(); 
+function ProjectCard ({project}: {project: Project}) {
+  return (
+  <div className="p-2 bg-slate-100 border-2 border-slate-300 flex gap-2 flex-wrap">
+    <div>
+      Rank 1
+    </div>
+    <div>
+      <div className="w-full">{project.id}</div>
+      <div>{project.githubLink}</div>
+      <div>{project.npmLink}</div>
+    </div>
+  </div>
+  )
+}
+
+
+function MetricCard ({type}: {type: MetricType}) {
+  return (
+  <div>
+    {type}
+    <VoteInput metricType={type} />
+  </div>
+  )
+}
+
+function VoteInput ({metricType}: {metricType: MetricType}) {
+  const {setRemainingCredits, remainingCredits, setProjects, setWeight} = useAppContext(); 
   const [creditsUsed, setCreditsUsed] = useState<number>(0);
   const [votes, setVotes] = useState<number>(0);
   const [increaseDisabled, setIncreaseDisabled] = useState<boolean>(false);
   const [decreaseDisabled, setDecreaseDisabled] = useState<boolean>(false);
   
+  function rewardFunction () {
+    // setProjects(projects => projects.map(project => {
+    //   project.metrics.map(metric => {
+    //     ;
+    //     return metric;
+    //   }
+    // })
+  }
   function handleIncreaseVotes () {
     if (increaseDisabled) return;
     const tempVotes = votes + 1;
     const cost = tempVotes * tempVotes;
     setVotes(tempVotes);
+    setWeight(metricType, 1);
     setCreditsUsed(cost);
     setRemainingCredits(remaining => remaining - (cost - (votes * votes)));
   }
@@ -47,6 +94,7 @@ function VoteInput () {
     if (decreaseDisabled) return;
     const tempVotes = votes - 1;
     const cost = tempVotes * tempVotes;
+    setWeight(metricType, -1);
     setVotes(tempVotes);
     setCreditsUsed(cost);
     setRemainingCredits(remaining => remaining + ((votes * votes) - cost));
