@@ -44,7 +44,7 @@ const wagmiConfig = createConfig({
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [state, setState] = useState<any | null>(null);
+  const [state, setState] = useState<GlobalState | null>(null);
 
   useEffect(() => {
     trpc()
@@ -57,8 +57,11 @@ export default function App() {
       });
   }, []);
 
-  if (isLoading) {
+  if (isLoading && !state) {
     return <div id="app">Loading</div>;
+  }
+  if (!state) {
+    return <div id="app">Error</div>;
   }
 
   return (
