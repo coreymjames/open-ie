@@ -156,6 +156,7 @@ function QuadraticWeights() {
           <QuadraticWeight type={MetricType.NUM_GITHUB_STARS} />
           <QuadraticWeight type={MetricType.NUM_NPM_DOWNLOADS} />
           <QuadraticWeight type={MetricType.NUM_GITHUB_CONTRIBUTORS} />
+          <QuadraticWeight type={MetricType.NUM_GITHUB_COMMITS} />
         </div>
       </div>
       <div className="flex justify-between p-6">

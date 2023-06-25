@@ -21,4 +21,5 @@ export const MetricTypeDisplay = {
   NUM_GITHUB_CONTRIBUTORS: "Contributors",
   NUM_GITHUB_STARS: "Stars",
   NUM_NPM_DOWNLOADS: "Downloads",
+  NUM_GITHUB_COMMITS: "Commits",
 };

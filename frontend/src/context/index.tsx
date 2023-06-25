@@ -41,6 +41,7 @@ export const AppContextProvider = ({ children }: AppProviderProps) => {
     { metricType: "NUM_GITHUB_STARS", value: 1 },
     { metricType: "NUM_NPM_DOWNLOADS", value: 1 },
     { metricType: "NUM_GITHUB_CONTRIBUTORS", value: 1 },
+    { metricType: "NUM_GITHUB_COMMITS", value: 1 },
   ]);
 
   function setWeight(metricType: MetricType, value: number) {
