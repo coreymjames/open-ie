@@ -60,7 +60,10 @@ function QuadraticWeight({ type }: { type: MetricType }) {
         >
           -
         </VoteButton>
-        <div>Votes: {votes}</div>
+        <div className="flex flex-col items-center">
+          <span>{votes}</span>
+          <span className="text-xs uppercase">votes</span>
+        </div>
         <VoteButton
           disabled={increaseDisabled}
           handleClick={handleIncreaseVotes}
@@ -68,7 +71,10 @@ function QuadraticWeight({ type }: { type: MetricType }) {
           +
         </VoteButton>
       </div>
-      <div className="col-span-1 flex justify-center">{creditsUsed}</div>
+      <div className="flex flex-col items-center">
+        <span>{creditsUsed}</span>
+        <span className="text-xs uppercase">credits</span>
+      </div>
     </div>
   );
 }
@@ -106,16 +112,18 @@ function QuadraticWeights() {
         Quadratic Weights
       </div>
       <div className="p-6">
-        <div className="flex items-center justify-between">
-          <h6>Metrics</h6>
+        <div className="mb-4 flex items-center justify-between border-b-[1px] pb-4">
+          <h6 className="font-medium uppercase">Voice Credits</h6>
           <div className="text-lg font-light">
             <span>{remainingCredits}</span>/{totalCredits}
           </div>
         </div>
-        <QuadraticWeight type={MetricType.NUM_DEPENDANTS} />
-        <QuadraticWeight type={MetricType.NUM_GITHUB_STARS} />
-        <QuadraticWeight type={MetricType.NUM_NPM_DOWNLOADS} />
-        <QuadraticWeight type={MetricType.NUM_GITHUB_CONTRIBUTORS} />
+        <div className="">
+          <QuadraticWeight type={MetricType.NUM_DEPENDANTS} />
+          <QuadraticWeight type={MetricType.NUM_GITHUB_STARS} />
+          <QuadraticWeight type={MetricType.NUM_NPM_DOWNLOADS} />
+          <QuadraticWeight type={MetricType.NUM_GITHUB_CONTRIBUTORS} />
+        </div>
       </div>
       <div className="flex justify-between p-6">
         <SecondaryButton>Save & Exit</SecondaryButton>
