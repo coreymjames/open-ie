@@ -10,7 +10,8 @@ function ProjectList() {
     const weight = weights.find(
       (weight) => weight.metricType === projectMetric.metricType
     );
-    return weight!.value * projectMetric.value;
+    if (!weight) return 0;
+    return weight.value * projectMetric.value;
   }
 
   function rewardFunction(project: ProjectWithMetrics, weights: Weight[]) {
@@ -26,9 +27,12 @@ function ProjectList() {
         Repositories
       </div>
       {projects
-        .sort((a, b) => rewardFunction(a, weights) - rewardFunction(b, weights))
+        .sort((a, b) => rewardFunction(b, weights) - rewardFunction(a, weights))
         .map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index + 1} />
+          <div key={project.id}>
+            {rewardFunction(project, weights)}
+            <ProjectCard key={project.id} project={project} index={index + 1} />
+          </div>
         ))}
     </div>
   );
@@ -49,7 +53,7 @@ function ProjectCard({
           {index}
         </div>
         <h4 className="flex-1 whitespace-nowrap p-4 text-xl font-light">
-          Project Name
+          {project.name}
         </h4>
         <div className="flex w-full justify-evenly  p-4">
           {project.metrics.map((metric) => (
@@ -67,19 +71,17 @@ function ProjectCard({
         <div className="grid w-full grid-cols-4 border-t-[1px] border-gray-300 py-4 text-sm">
           <div className="col-span-3 mr-12">
             <h5 className="mb-1 font-semibold">Project Summary</h5>
-            <p className="font-light">
-              TODO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
+            <p className="font-light">{project.description}</p>
           </div>
           <div className="flex flex-col border-l-[1px] pl-4">
             <h5 className="mb-1 font-semibold">Project Links</h5>
             <a className="font-light underline" href={project.githubLink!}>
               Github
             </a>
-            <a className="font-light underline" href={`https://www.npmjs.com/package/${project.name}`}>
+            <a
+              className="font-light underline"
+              href={`https://www.npmjs.com/package/${project.name}`}
+            >
               NPM
             </a>
           </div>
@@ -91,7 +93,7 @@ function ProjectCard({
 
 function ProjectMetric({ metric }: { metric: Metric }) {
   // @ts-ignore
-  const metricName = MetricTypeDisplay[metric.metricType]
+  const metricName = MetricTypeDisplay[metric.metricType];
   return (
     <div className="flex flex-col items-center">
       <div className="text-xl font-medium">{metric.value}</div>
