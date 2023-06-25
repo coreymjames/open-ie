@@ -6,7 +6,6 @@
     "dev": "dotenv -- next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "prisma": "prisma",
     "scrapeGithubMetrics": "dotenv -- ts-node --esm scripts/scrapeGithubMetrics.ts"
   },
