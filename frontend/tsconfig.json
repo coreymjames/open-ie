@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "incremental": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    }  
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/scrapeGithubMetrics.mts"],
   "exclude": ["node_modules"]
 }

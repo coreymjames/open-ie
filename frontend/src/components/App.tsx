@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GlobalState } from "@/types";
+import { GlobalState } from "../types";
 import ConnectWallet from "./connect-wallet";
 
 import "@rainbow-me/rainbowkit/styles.css";
@@ -29,8 +29,8 @@ import TokenArtifact from "../contracts/Token.json";
 import contractAddress from "../contracts/contract-address.json";
 
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { AppContextProvider, useAppContext } from "@/context";
-import { trpc } from "@/trpc";
+import { AppContextProvider, useAppContext } from "../context";
+import { trpc } from "../trpc";
 import VotingPage from "./VotingPage";
 import { ethers } from "ethers";
 
