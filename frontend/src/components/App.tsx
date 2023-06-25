@@ -104,11 +104,11 @@ export default function App() {
   );
 }
 
-import { OpenIE__factory } from '../contracts/typechain-types';
+// import { OpenIE__factory } from '../contracts/typechain-types';
 
 function Main({ state }: { state: GlobalState }) {
   const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
-  const contract = OpenIE__factory.connect(contractAddress.Token, provider);
+  // const contract = OpenIE__factory.connect(contractAddress.Token, provider);
   
 
   useEffect(() => {
