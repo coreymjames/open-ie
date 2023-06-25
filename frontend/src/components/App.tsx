@@ -3,11 +3,10 @@ import { GlobalState } from "@/types";
 import ConnectWallet from "./connect-wallet";
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { createConfig, configureChains, WagmiConfig, useContractInfiniteReads } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { createConfig, configureChains, WagmiConfig } from 'wagmi'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RainbowKitProvider, connectorsForWallets, getDefaultWallets } from "@rainbow-me/rainbowkit";
-// import { createPublicClient, http } from 'viem'; 
+import { RainbowKitProvider, connectorsForWallets } from "@rainbow-me/rainbowkit";
+
 import {
   mainnet,
   polygon,
@@ -23,15 +22,15 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { AppContextProvider, useAppContext } from "@/context";
 import { trpc } from "@/trpc";
 import VotingPage from "./VotingPage";
+import { ethers } from "ethers";
 
-// const publicClient = createPublicClient({
-//   chain: mainnet,
-//   transport: http()
-// })
+import {
+  injectedWallet,
+} from '@rainbow-me/rainbowkit/wallets';
+
 
 const queryClient = new QueryClient();
 
-const projectId = 'YOUR_PROJECT_ID';
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     mainnet,
@@ -41,7 +40,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     zora,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
   ],
-  // [publicProvider()]
   [    jsonRpcProvider({
     rpc: (chain) => ({
       http: `http://127.0.0.1:8545`,
@@ -49,26 +47,13 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   }),]
 );
 
-const { wallets } = getDefaultWallets({
-  appName: 'RainbowKit demo',
-  projectId,
-  chains,
-});
-
-const demoAppInfo = {
-  appName: 'Rainbowkit Demo',
-};
-
 const connectors = connectorsForWallets([
-  ...wallets,
-  // {
-  //   groupName: 'Other',
-  //   // wallets: [
-  //   //   argentWallet({ projectId, chains }),
-  //   //   trustWallet({ projectId, chains }),
-  //   //   ledgerWallet({ projectId, chains }),
-  //   // ],
-  // },
+  {
+    groupName: 'Recommended',
+    wallets: [
+      injectedWallet({ chains }),
+    ]
+  }
 ]);
 
 const wagmiConfig = createConfig({
@@ -107,13 +92,18 @@ export default function App() {
   );
 }
 
+import { OpenIE__factory } from '../contracts/typechain-types';
+
 function Main({ state }: { state: GlobalState }) {
-  // const provider = useProvider();
-  // const contract = useContractInfiniteReads({
-  //   address: CONTRACT_ADDRESS,
-  //   abi: TokenArtifact.abi,
-  //   signerOrProvider: provider,
-  // });
+  const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
+  const contract = OpenIE__factory.connect(contractAddress.Token, provider);
+  
+  useEffect(() => {
+    (async () => {
+    const projects = await contract.get_projects();
+    console.log(projects);
+    })();
+  });
 
   const { setProjects } = useAppContext();
   useEffect(() => {

@@ -4,6 +4,8 @@ import fs from "fs";
 import hre from 'hardhat'
 import { OpenIE } from "../typechain-types";
 
+import fse from 'fs-extra';
+
 async function main() {
   // if (hre.network.name === "hardhat") {
   //   console.warn(
@@ -48,6 +50,7 @@ async function saveFrontendFiles(token: OpenIE) {
   );
 
   const TokenArtifact = hre.artifacts.readArtifactSync("OpenIE");
+  fse.copySync("typechain-types", "frontend/src/contracts/typechain-types", { overwrite: true });
 
   fs.writeFileSync(
     path.join(contractsDir, "OpenIE.json"),
