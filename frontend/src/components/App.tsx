@@ -191,18 +191,17 @@ function Main({ state }: { state: GlobalState }) {
   }, [setProjects]);
 
   return (
-    <div>
-      <Nav />
-      <div className="mx-auto my-6 max-w-screen-xl">
-        <QueryClientProvider client={queryClient}>
-          <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains}>
-              <ConnectWallet />
+    <QueryClientProvider client={queryClient}>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <div>
+            <Nav />
+            <div className="mx-auto my-6 max-w-screen-xl">
               <VotingPage />
-            </RainbowKitProvider>
-          </WagmiConfig>
-        </QueryClientProvider>
-      </div>
-    </div>
+            </div>
+          </div>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </QueryClientProvider>
   );
 }

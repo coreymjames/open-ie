@@ -6,7 +6,10 @@ function VotingPage() {
   return (
     <div className="grid grid-cols-3 p-4">
       <div className="col-span-3">
-        <Weights />
+        <h1 className="text-xl font-light">Set Evaluation Weights</h1>
+        <p className="my-4 text-sm font-light">
+          Adjust the evaluation weights using the Quadratic Weight Slider.
+        </p>
       </div>
       <div className="col-span-1">
         <QuadraticWeights />
