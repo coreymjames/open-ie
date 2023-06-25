@@ -29,7 +29,7 @@ model Metric {
   id         Int        @id @default(autoincrement())
   metricType MetricType @map("metric_type")
   value      Int        @default(0)
-  project    Project    @relation(fields: [projectId], references: [id])
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId  String     @map("project_id") @db.Uuid
 
   @@map("metric")
@@ -43,6 +43,7 @@ datasource db {
 enum MetricType {
   NUM_DEPENDANTS
   NUM_GITHUB_STARS
+  NUM_GITHUB_COMMITS
   NUM_GITHUB_CONTRIBUTORS
   NUM_NPM_DOWNLOADS
 }
