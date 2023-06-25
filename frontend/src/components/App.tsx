@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GlobalState } from "@/types";
+import { GlobalState } from "../types";
 import ConnectWallet from "./connect-wallet";
 
 import "@rainbow-me/rainbowkit/styles.css";
@@ -29,8 +29,8 @@ import TokenArtifact from "../contracts/Token.json";
 import contractAddress from "../contracts/contract-address.json";
 
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { AppContextProvider, useAppContext } from "@/context";
-import { trpc } from "@/trpc";
+import { AppContextProvider, useAppContext } from "../context";
+import { trpc } from "../trpc";
 import VotingPage from "./VotingPage";
 import { ethers } from "ethers";
 
@@ -126,7 +126,9 @@ function Main({ state }: { state: GlobalState }) {
       {
         id: "f4f67524-1728-4aed-94a1-85590d003464",
         githubLink: "https://github.com/wagmi-dev/wagmi",
-        npmLink: "https://www.npmjs.com/package/wagmi",
+        name: "https://www.npmjs.com/package/wagmi",
+        cid: '',
+        description: 'description',
         isTest: true,
         metrics: [
           {
@@ -158,7 +160,9 @@ function Main({ state }: { state: GlobalState }) {
       {
         id: "f4f67524-1728-4aed-94a1-85590d003463",
         githubLink: "https://github.com/wagmi-dev/nope",
-        npmLink: "https://www.npmjs.com/package/123",
+        name: "https://www.npmjs.com/package/123",
+        description: 'description 2',
+        cid: '',
         isTest: true,
         metrics: [
           {
