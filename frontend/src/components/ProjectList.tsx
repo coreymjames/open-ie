@@ -74,10 +74,10 @@ function ProjectCard({
           </div>
           <div className="flex flex-col border-l-[1px] pl-4">
             <h5 className="mb-1 font-semibold">Project Links</h5>
-            <a className="font-light underline" href={project.githubLink}>
+            <a className="font-light underline" href={project.githubLink!}>
               Github
             </a>
-            <a className="font-light underline" href={project.npmLink}>
+            <a className="font-light underline" href={`https://www.npmjs.com/package/${project.name}`}>
               NPM
             </a>
           </div>
@@ -88,10 +88,12 @@ function ProjectCard({
 }
 
 function ProjectMetric({ metric }: { metric: Metric }) {
+  // @ts-ignore
+  const metricName = MetricTypeDisplay[metric.metricType]
   return (
     <div className="flex flex-col items-center">
       <div className="text-xl font-medium">{metric.value}</div>
-      <div className="text-xs">{MetricTypeDisplay[metric.metricType]}</div>
+      <div className="text-xs">{metricName}</div>
     </div>
   );
 }
