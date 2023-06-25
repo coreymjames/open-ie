@@ -1,4 +1,5 @@
 import { useAppContext } from "@/context";
+import { formatNumber } from "@/lib/formatNumber";
 import { MetricTypeDisplay, ProjectWithMetrics, Weight } from "@/types";
 import { Metric } from "@prisma/client";
 import { useState } from "react";
@@ -92,7 +93,7 @@ function ProjectMetric({ metric }: { metric: Metric }) {
   const metricName = MetricTypeDisplay[metric.metricType];
   return (
     <div className="flex flex-col items-center">
-      <div className="text-base font-medium">{metric.value}</div>
+      <div className="text-base font-medium">{formatNumber(metric.value)}</div>
       <div className="text-xs">{metricName}</div>
     </div>
   );
