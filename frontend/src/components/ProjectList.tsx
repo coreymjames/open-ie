@@ -29,10 +29,7 @@ function ProjectList() {
       {projects
         .sort((a, b) => rewardFunction(b, weights) - rewardFunction(a, weights))
         .map((project, index) => (
-          <div key={project.id}>
-            {rewardFunction(project, weights)}
-            <ProjectCard key={project.id} project={project} index={index + 1} />
-          </div>
+          <ProjectCard key={project.id} project={project} index={index + 1} />
         ))}
     </div>
   );
@@ -48,20 +45,20 @@ function ProjectCard({
   const [showDetails, setShowDetails] = useState(false);
   return (
     <div className="flex w-full flex-wrap gap-2 px-6 odd:bg-gray-50 even:bg-white">
-      <div className="flex w-full items-center">
-        <div className="mr-2 flex justify-center border-r-[1px] py-4 pr-6">
+      <div className="grid w-full grid-cols-12 items-center">
+        <div className=" col-span-2 mr-2 flex justify-center border-r-[1px] py-4 pr-6">
           {index}
         </div>
-        <h4 className="flex-1 whitespace-nowrap p-4 text-xl font-light">
+        <h4 className="col-span-3  flex-1 overflow-hidden text-ellipsis whitespace-nowrap p-4 text-xl font-light">
           {project.name}
         </h4>
-        <div className="flex w-full justify-evenly  p-4">
+        <div className="col-span-6 flex items-baseline justify-evenly gap-2">
           {project.metrics.map((metric) => (
             <ProjectMetric key={metric.id} metric={metric} />
           ))}
         </div>
         <div
-          className="cursor-pointer"
+          className="flex cursor-pointer justify-end"
           onClick={() => setShowDetails((show: boolean) => !show)}
         >
           v
@@ -92,11 +89,10 @@ function ProjectCard({
 }
 
 function ProjectMetric({ metric }: { metric: Metric }) {
-  // @ts-ignore
   const metricName = MetricTypeDisplay[metric.metricType];
   return (
     <div className="flex flex-col items-center">
-      <div className="text-xl font-medium">{metric.value}</div>
+      <div className="text-base font-medium">{metric.value}</div>
       <div className="text-xs">{metricName}</div>
     </div>
   );

@@ -39,7 +39,7 @@ export const AppContextProvider = ({ children }: AppProviderProps) => {
   const [weights, setWeights] = useState<Weight[]>([
     { metricType: "NUM_DEPENDANTS", value: 1 },
     { metricType: "NUM_GITHUB_STARS", value: 1 },
-    { metricType: "NUM_NPM_DOWNLOADS", value: 1 },
+    { metricType: "NUM_NPM_DOWNLOADS", value: 0.01 },
     { metricType: "NUM_GITHUB_CONTRIBUTORS", value: 1 },
     { metricType: "NUM_GITHUB_COMMITS", value: 1 },
   ]);
