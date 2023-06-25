@@ -34,14 +34,15 @@ function QuadraticWeight({ type }: { type: MetricType }) {
   }
 
   useEffect(() => {
-    const cost = votes * votes;
-    if (votes > 0) {
+    const cost = Math.abs((votes + 1) * (votes + 1) - votes * votes);
+    if (votes >= 0) {
       if (cost > remainingCredits) {
         setIncreaseDisabled(true);
       } else {
         setIncreaseDisabled(false);
       }
-    } else {
+    }
+    if (votes <= 0) {
       if (cost > remainingCredits) {
         setDecreaseDisabled(true);
       } else {
