@@ -85,7 +85,6 @@ export default function App() {
       .getData.query()
       .then((data) => {
         setState(data);
-        console.log(data);
 
         setIsLoading(false);
       });
@@ -111,87 +110,93 @@ function Main({ state }: { state: GlobalState }) {
   const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
   const contract = OpenIE__factory.connect(contractAddress.Token, provider);
   
+
   useEffect(() => {
     (async () => {
-    const projects = await contract.get_projects();
-    console.log(projects);
-    })();
+      // trpc.
+
+      // const projects = await prisma.project.findMany({
+      //   take: 100,
+      // })
+    // const projects = await contract.get_projects();
+    // console.log(projects);
+    })()
   });
 
   const { setProjects } = useAppContext();
   useEffect(() => {
-    // setProjects(state.projects);
+    setProjects(state.projects);
     // @TODO - remove hardcoded projects
-    setProjects([
-      {
-        id: "f4f67524-1728-4aed-94a1-85590d003464",
-        githubLink: "https://github.com/wagmi-dev/wagmi",
-        name: "https://www.npmjs.com/package/wagmi",
-        cid: '',
-        description: 'description',
-        isTest: true,
-        metrics: [
-          {
-            id: 1,
-            metricType: MetricType.NUM_DEPENDANTS,
-            value: 2,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003464",
-          },
-          {
-            id: 2,
-            metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
-            value: 4,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003464",
-          },
-          {
-            id: 3,
-            metricType: MetricType.NUM_GITHUB_STARS,
-            value: 6,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003464",
-          },
-          {
-            id: 4,
-            metricType: MetricType.NUM_NPM_DOWNLOADS,
-            value: 8,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003464",
-          },
-        ],
-      },
-      {
-        id: "f4f67524-1728-4aed-94a1-85590d003463",
-        githubLink: "https://github.com/wagmi-dev/nope",
-        name: "https://www.npmjs.com/package/123",
-        description: 'description 2',
-        cid: '',
-        isTest: true,
-        metrics: [
-          {
-            id: 1,
-            metricType: MetricType.NUM_DEPENDANTS,
-            value: 8,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003463",
-          },
-          {
-            id: 2,
-            metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
-            value: 6,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003463",
-          },
-          {
-            id: 3,
-            metricType: MetricType.NUM_GITHUB_STARS,
-            value: 4,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003463",
-          },
-          {
-            id: 4,
-            metricType: MetricType.NUM_NPM_DOWNLOADS,
-            value: 2,
-            projectId: "f4f67524-1728-4aed-94a1-85590d003463",
-          },
-        ],
-      },
-    ]);
+    // setProjects([
+    //   {
+    //     id: "f4f67524-1728-4aed-94a1-85590d003464",
+    //     githubLink: "https://github.com/wagmi-dev/wagmi",
+    //     name: "https://www.npmjs.com/package/wagmi",
+    //     cid: '',
+    //     description: 'description',
+    //     isTest: true,
+    //     metrics: [
+    //       {
+    //         id: 1,
+    //         metricType: MetricType.NUM_DEPENDANTS,
+    //         value: 2,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003464",
+    //       },
+    //       {
+    //         id: 2,
+    //         metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
+    //         value: 4,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003464",
+    //       },
+    //       {
+    //         id: 3,
+    //         metricType: MetricType.NUM_GITHUB_STARS,
+    //         value: 6,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003464",
+    //       },
+    //       {
+    //         id: 4,
+    //         metricType: MetricType.NUM_NPM_DOWNLOADS,
+    //         value: 8,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003464",
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     id: "f4f67524-1728-4aed-94a1-85590d003463",
+    //     githubLink: "https://github.com/wagmi-dev/nope",
+    //     name: "https://www.npmjs.com/package/123",
+    //     description: 'description 2',
+    //     cid: '',
+    //     isTest: true,
+    //     metrics: [
+    //       {
+    //         id: 1,
+    //         metricType: MetricType.NUM_DEPENDANTS,
+    //         value: 8,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003463",
+    //       },
+    //       {
+    //         id: 2,
+    //         metricType: MetricType.NUM_GITHUB_CONTRIBUTORS,
+    //         value: 6,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003463",
+    //       },
+    //       {
+    //         id: 3,
+    //         metricType: MetricType.NUM_GITHUB_STARS,
+    //         value: 4,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003463",
+    //       },
+    //       {
+    //         id: 4,
+    //         metricType: MetricType.NUM_NPM_DOWNLOADS,
+    //         value: 2,
+    //         projectId: "f4f67524-1728-4aed-94a1-85590d003463",
+    //       },
+    //     ],
+    //   },
+    // ]);
   }, [setProjects]);
 
   return (

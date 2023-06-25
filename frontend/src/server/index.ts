@@ -9,7 +9,8 @@ export const appRouter = router({
     const projects = await prisma.project.findMany({
       include: {
         metrics: true
-      }
+      },
+      take: 100,
     });
 
     return {
