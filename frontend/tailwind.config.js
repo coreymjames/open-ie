@@ -1,3 +1,5 @@
+// let plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,5 +16,31 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        thumb: {
+          "&::-webkit-slider-thumb": {
+            appearance: "none",
+            width: "24px",
+            height: "24px",
+            backgroundColor: "black",
+            borderRadius: "50%",
+            border: "none",
+            transition: "background-color 0.3s",
+          },
+          "&:hover::-webkit-slider-thumb": {
+            backgroundColor: "darkblue",
+          },
+          "&::-moz-range-thumb": {
+            width: "25px" /* Set a specific slider handle width */,
+            height: "25px" /* Slider handle height */,
+            background: "#04AA6D" /* Green background */,
+            cursor: "pointer" /* Cursor on hover */,
+          },
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 };
