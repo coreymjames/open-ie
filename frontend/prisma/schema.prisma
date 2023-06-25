@@ -6,11 +6,13 @@ generator client {
 }
 
 model Project {
-  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name    String   @map("name")
-  isTest  Boolean  @default(true) @map("is_test")
-  cid     String?
-  metrics Metric[]
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @map("name")
+  isTest      Boolean  @default(true) @map("is_test")
+  githubLink  String?
+  description String?
+  cid         String?
+  metrics     Metric[]
 
   @@map("project")
 }
